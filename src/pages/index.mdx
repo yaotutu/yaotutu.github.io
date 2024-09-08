@@ -1,0 +1,61 @@
+import BaseLayout from "../layouts/BaseLayout.astro";
+import BaseCard from "../components/BaseCard.astro";
+import Collapse from "../components/blog/collapse.astro";
+import Diff from "../components/blog/diff.astro";
+import Error from "../components/blog/error.astro";
+import Info from "../components/blog/info.astro";
+import Kbd from "../components/blog/kbd.astro";
+import Success from "../components/blog/success.astro";
+import Warning from "../components/blog/warning.astro";
+import TimeLine from "../components/page/TimeLine.astro";
+import LinkCard from "../components/page/LinkCard.astro";
+
+<BaseLayout title="Home">
+  <BaseCard title="Home">
+    <div class="flex">
+      <div class="p-6">
+          # Hi there! 👋
+
+          我是 Yaotutu
+
+          一位即将毕业的软件工程硕士，热衷于前端开发与全栈技术，也痴迷于探索各种电子产品和 Linux 的无限可能。
+      </div>
+    </div>
+
+  </BaseCard>
+
+  <BaseCard title="Home" image="/index_day.jpg">
+
+
+
+
+    我是 Yaotutu
+
+
+    一位热衷于创造和探索的前端开发者，专注于使用 Next.js 打造快速、高效的全栈应用，并在 React 的世界里找到灵感和乐趣。偶尔，我也会用 Vue.js 挑战一些新奇的项目。目前，我正沉迷于 Flutter，尝试用它构建跨平台应用。
+
+    我是一名 Vim 爱好者，对 Neovim 的简洁和强大情有独钟。
+
+    作为 NAS 发烧友，我拥有一台 Dell 7515 服务器，运行 Unraid OS，配置了 AMD 7302P 处理器、64GB 内存、4TB 固态硬盘和 40TB 机械硬盘，简直就是我的私人数据乐园。
+
+    我同样热爱 Linux，已经通过了红帽 RHCSA 认证，现在正准备迎接 RHCE 的挑战。没有什么能阻挡我对技术的热爱！
+
+
+#### 快速跳转
+
+<LinkCard
+  title="开源项目"
+  desc="我的开源项目！"
+  url=""
+/>
+
+<LinkCard
+  title="博客文章"
+  desc="我的博客文章！"
+  url=""
+/>
+
+### Github Commit Graph
+
+  </BaseCard>
+</BaseLayout>
