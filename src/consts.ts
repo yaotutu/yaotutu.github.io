@@ -47,9 +47,9 @@ export const menuItems = [
         target: "_self",
       }, // All blog
       {
-        id: "tech",
-        text: "Tech blogs",
-        href: "/blog/categories/tech",
+        id: "css",
+        text: "CSS blogs",
+        href: "/blog/categories/css",
         svg: "cube",
         target: "_self",
       }, // Technology category
