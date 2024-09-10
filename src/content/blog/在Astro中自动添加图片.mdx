@@ -1,0 +1,137 @@
+---
+title: "在Astro中自动添加图片"
+description: ""
+pubDate: "2024 09 10"
+image: /image/image4.jpg
+categories:
+  - Astro
+badge: "New"
+---
+
+# 在Astro中自动添加图片
+为每篇博客配图是一件极其繁琐的事情，博客有发布日期，根据发布日期自动添加图片是一个很好的解决方案。在这篇博客中，我将展示如何使用 Astro 实现一个功能，根据发布日期自动添加图片。
+
+
+## 为什么选择 Bing 壁纸？
+
+Bing 的每日壁纸以其精美的风景和多样的图像著称。在网站上展示这些壁纸，不仅能让页面更具吸引力，还能为用户提供新鲜感。每次用户访问时看到不同的壁纸，能显著提升页面的趣味性。
+
+## 实现步骤
+
+我们将分步实现以下功能：
+
+- 接收日期输入：支持日期字符串或 JavaScript Date 对象。
+- 获取壁纸 URL：通过 Bing API 获取对应日期的壁纸 URL。
+- 展示壁纸：在 Astro 页面中展示获取到的壁纸。
+
+1. 准备工作
+   确保你的 Astro 项目已配置好 TypeScript 和 Astro 组件。
+
+2. 创建实用工具函数
+   编写一个函数来处理日期并获取壁纸 URL。以下是 getBingWallpaperUrl.ts 文件的代码：
+
+```typescript
+// src/utils/getBingWallpaperUrl.ts
+
+/**
+ * 计算从指定日期到今天的天数差
+ * @param {Date | string} dateInput - 可以是 Date 对象或者日期字符串（格式为 "YYYY-MM-DD" 或 "YYYY MM DD"）
+ * @returns {number} 日期偏移量
+ */
+function calculateDateOffset(dateInput: Date | string): number {
+  let targetDate: Date;
+
+  if (typeof dateInput === "string") {
+    const normalizedDateStr = dateInput.replace(/\s+/g, "-"); // 将空格替换为 "-"
+    targetDate = new Date(normalizedDateStr);
+  } else {
+    targetDate = dateInput;
+  }
+
+  const today = new Date();
+
+  if (isNaN(targetDate.getTime())) {
+    throw new Error(
+      'Invalid date format. Please use a valid Date object or "YYYY-MM-DD" / "YYYY MM DD".',
+    );
+  }
+
+  const timeDiff = today.getTime() - targetDate.getTime();
+  const dayDiff = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
+  return dayDiff;
+}
+
+/**
+ * 获取必应壁纸的完整图片 URL
+ * @param {Date | string} dateInput - 可以是 Date 对象或者日期字符串（格式为 "YYYY-MM-DD" 或 "YYYY MM DD"）
+ * @returns {Promise<string>} 必应壁纸的完整图片 URL
+ */
+async function getBingWallpaperUrl(dateInput: Date | string): Promise<string> {
+  const dateOffset = calculateDateOffset(dateInput);
+  const apiUrl = `https://www.bing.com/HPImageArchive.aspx?format=js&idx=${dateOffset}&n=1&mkt=en-US`;
+
+  try {
+    const response = await fetch(apiUrl);
+    const data = await response.json();
+    const baseUrl = "https://www.bing.com";
+    const imageUrl = data.images[0].url;
+    const fullImageUrl = baseUrl + imageUrl;
+
+    return fullImageUrl;
+  } catch (error) {
+    throw new Error("Error fetching Bing wallpaper: " + error);
+  }
+}
+
+export { getBingWallpaperUrl };
+```
+
+这个函数接受一个日期，通过 Bing API 获取对应日期的壁纸 URL。
+
+3. 在 Astro 页面中使用该函数
+   在 Astro 页面中使用 getBingWallpaperUrl 函数来展示壁纸。创建一个新的 Astro 页面文件 index.astro：
+
+```astro
+---
+// src/pages/index.astro
+import { getBingWallpaperUrl } from "../utils/getBingWallpaperUrl.ts";
+
+const dateStr = "2024-09-09"; // 可以替换为任意日期
+let wallpaperUrl = "";
+
+try {
+  wallpaperUrl = await getBingWallpaperUrl(dateStr); // 在构建阶段获取壁纸 URL
+} catch (error) {
+  console.error("Error fetching wallpaper URL:", error);
+}
+---
+
+<html>
+  <head>
+    <title>Bing Daily Wallpaper for {dateStr}</title>
+  </head>
+  <body>
+    <h1>必应每日壁纸</h1>
+    {
+      wallpaperUrl ? (
+        <img
+          src={wallpaperUrl}
+          alt={`Bing Daily Wallpaper for ${dateStr}`}
+          style="width: 100%; max-width: 1200px; height: auto;"
+        />
+      ) : (
+        <p>无法获取壁纸。</p>
+      )
+    }
+  </body>
+</html>
+```
+
+## 为什么选择构建阶段处理？
+
+在构建阶段处理壁纸数据有几个显著的好处：
+
+- 性能提升：页面在构建时生成完整的 HTML，包括壁纸 URL，用户访问时页面加载更快。
+- 用户体验：页面加载更流畅，用户能够快速看到壁纸。
+- 减少 API 请求：减少对 Bing API 的实时请求，降低超限风险。
+- 更高的可靠性：静态页面避免了因外部服务不可用导致的问题。
