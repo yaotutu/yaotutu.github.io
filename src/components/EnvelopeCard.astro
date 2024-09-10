@@ -9,6 +9,13 @@ const displayDate = dayjs(pubDate).format("ddd MMM DD YYYY");
 const hasTategories = categories && categories.length > 0;
 const hasTags = tags && tags.length > 0;
 const target = "_self";
+import { getBingWallpaperUrl } from "../utils/getBingWallpaperUrl";
+let wallpaperUrl = '';
+try {
+  wallpaperUrl = await getBingWallpaperUrl(pubDate as Date); // 在构建阶段获取壁纸 URL
+} catch (error) {
+  console.error('Error fetching wallpaper URL:', error);
+}
 ---
 
 <div
@@ -73,7 +80,7 @@ const target = "_self";
     image && (
       <div class="relative w-full lg:w-2/5 h-auto rounded-none overflow-hidden lg:order-2 order-1">
         <Image
-          src={image}
+          src={wallpaperUrl}
           alt={title}
           width="300"
           height="200"
