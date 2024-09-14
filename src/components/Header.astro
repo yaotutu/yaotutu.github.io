@@ -7,8 +7,8 @@ import { SITE_TITLE } from "../consts";
   class="navbar max-md:translate-y-0 fixed px-2 w-full transform -translate-y-full text-center z-50 transition-transform bg-base-100 shadow-xl"
 >
   <div class="navbar-start">
-    <div class="dropdown">
-      <div
+    <details class="dropdown" id="dropdown">
+      <summary
         tabindex="0"
         role="button"
         class="btn btn-ghost"
@@ -25,9 +25,9 @@ import { SITE_TITLE } from "../consts";
             d="M64,384H448V341.33H64Zm0-106.67H448V234.67H64ZM64,128v42.67H448V128Z"
           ></path></svg
         >
-      </div>
+      </summary>
       <Menu />
-    </div>
+    </details>
   </div>
   <div class="navbar-center">
     <a class="btn btn-ghost text-xl" href="/">{SITE_TITLE}</a>
@@ -59,3 +59,19 @@ import { SITE_TITLE } from "../consts";
     </div>
   </div>
 </div>
+/**
+ * This script adds an event listener to the document that listens for 'click' events.
+ * When a click event occurs, it checks if the click was inside the element with the ID 'dropdown'.
+ * If the click was outside the 'dropdown' element and the 'dropdown' element has the 'open' attribute,
+ * the 'open' attribute is removed from the 'dropdown' element.
+ */
+<script>
+  document.addEventListener('click', function(event) {
+    const dropdown  = document.getElementById('dropdown') as HTMLElement
+    const isClickInside = dropdown.contains(event.target as Node);
+
+    if (!isClickInside && dropdown.hasAttribute('open')) {
+      dropdown.removeAttribute('open');
+    }
+  });
+</script>
