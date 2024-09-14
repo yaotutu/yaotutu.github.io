@@ -66,12 +66,21 @@ import { SITE_TITLE } from "../consts";
  * the 'open' attribute is removed from the 'dropdown' element.
  */ -->
 <script>
-  document.addEventListener('click', function(event) {
-    const dropdown  = document.getElementById('dropdown') as HTMLElement
+  // 父容器添加点击事件监听器
+  document.addEventListener("click", function (event) {
+    const dropdown = document.getElementById("dropdown") as HTMLElement;
     const isClickInside = dropdown.contains(event.target as Node);
-
-    if (!isClickInside && dropdown.hasAttribute('open')) {
-      dropdown.removeAttribute('open');
+    if (!isClickInside && dropdown.hasAttribute("open")) {
+      dropdown.removeAttribute("open");
     }
+  });
+  // 为菜单项添加点击事件监听器
+  document.querySelectorAll("#dropdown > ul > li").forEach((item) => {
+    item.addEventListener("click", function () {
+      const dropdown = document.getElementById("dropdown") as HTMLElement;
+      if (dropdown.hasAttribute("open")) {
+        dropdown.removeAttribute("open");
+      }
+    });
   });
 </script>
