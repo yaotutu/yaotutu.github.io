@@ -74,6 +74,16 @@ import { SITE_TITLE } from "../consts";
       dropdown.removeAttribute("open");
     }
   });
+
+  // 父容器添加滑动事件监听器
+  document.addEventListener("touchmove", function (event) {
+    const dropdown = document.getElementById("dropdown") as HTMLElement;
+    const isTouchInside = dropdown.contains(event.target as Node);
+    if (!isTouchInside && dropdown.hasAttribute("open")) {
+      dropdown.removeAttribute("open");
+    }
+  });
+
   // 为菜单项添加点击事件监听器
   document.querySelectorAll("#dropdown > ul > li").forEach((item) => {
     item.addEventListener("click", function () {
