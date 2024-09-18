@@ -58,7 +58,43 @@ CSS 选择器的优先级由四个部分组成，通常表示为四个数字：`
   }
 }
 ```
+此外，还有其他几种方法可以确保媒体查询中的样式生效：
 
+1. 使用更高优先级的选择器： 通过增加选择器的权重来覆盖原有样式。例如，添加一个额外的类选择器。
+```scss
+
+@media screen and (max-width: 640px) {
+  .container .wrapper.override {
+    padding-left: 0px; /* 确保媒体查询样式生效 */
+  }
+}
+
+```
+2. 使用 !important 声明： 在样式声明中使用 !important，强制覆盖所有其他声明。
+```scss
+@media screen and (max-width: 640px) {
+  .wrapper {
+    padding-left: 0px !important; /* 确保媒体查询样式生效 */
+  }
+}
+
+```
+3. 调整 CSS 结构： 重新组织 CSS 结构，确保媒体查询中的样式定义在更高优先级的选择器之后。
+
+```scss
+
+.container .wrapper {
+  padding-left: 80px;
+}
+
+@media screen and (max-width: 640px) {
+  .wrapper {
+    padding-left: 0px; /* 确保媒体查询样式生效 */
+  }
+}
+
+```
+通过这些方法，可以更灵活地控制 CSS 选择器的优先级，确保媒体查询中的样式能够正确应用。
 ## 总结
 
 通过这次问题的分析和解决，我总结出以下几点经验：
