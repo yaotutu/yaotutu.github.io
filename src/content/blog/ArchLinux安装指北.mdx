@@ -1,0 +1,105 @@
+---
+title: "ArchLinux安装指北"
+description: ""
+pubDate: "2024 09 20"
+image: /image/image4.jpg
+categories:
+  - Linux
+badge: Pin
+tags: 
+  - ArchLinux
+---
+
+# ArchLinux 安装指北
+
+## 安装过程
+* 下载镜像&制作启动盘&启动arch Linux 
+* 链接网络
+    * 有线网络
+        * ip link
+    * 无线网络使用iwctl工具(交互式)
+        * device list 查看当前设备
+        * station 设备名 scan
+            * 扫描以后是没有输出结果的,需要用下面的命令获取扫描的wifi列表
+        * station 设备名 get-networks
+            * 扫描到的wifi列表
+        * station 设备名 connect 网络名
+        * station 设备名 show
+            * 查看连接状态
+        * exit
+    * 无线网络使用iwctl工具(非交互式)
+        * iwctl --passphrase 密码 station 设备名 connect 网络名
+        * iwctl --passphrase 密码 station 设备名 show
+
+* 更新系统时间
+    * timedatectl set-ntp true
+* 时区设置
+    * timedatectl set-timezone Asia/Shanghai
+* 分区(独立磁盘,UEFI)
+    * fidisk -l,查看磁盘信息,注意别选择错误磁盘了,不然数据就没了
+    *  /dev/sdacfdisk
+        * 新建分区
+            * EFI分区(512M)
+            * 根分区(剩余空间)
+        * 格式化分区
+            * mkfs.fat -F32 /dev/sda1
+            * mkfs.btrfs /dev/sda2
+* archinstall 通过脚本安装
+    * archinstall
+        * 选择安装方式
+            * 1.自定义安装
+                * 选择分区
+                * 选择桌面环境
+                * 选择软件包
+                * 设置root密码
+                * 设置用户
+                * 安装引导
+            * 2.快速安装
+                * 选择桌面环境
+                * 设置root密码
+                * 设置用户
+                * 安装引导
+                * 安装完成后重启    
+## 额外操作
+* 安装桌面环境
+    sudo pacman -S hyprland kitty waybar
+* 安装登陆管理器
+    sudo pacman -S sddm
+* 安装一些字体
+    sudo pacman -S ttf-jetbrains-mono-nerd adobe-source-han-sans-cn-fonts adobe-source-code-pro-fonts
+* sudo systemctl enable sddm  //配置开机启动
+* reboot 重启系统
+
+## 配置ssh,并开启远程登陆
+* 安装ssh
+    sudo pacman -S openssh
+* 启动ssh
+    sudo systemctl start sshd
+* 开机启动
+    sudo systemctl enable sshd
+* 配置ssh
+    sudo vim /etc/ssh/sshd_config
+    * 修改端口(可选)
+        * Port 22
+    * 允许root登陆
+        * PermitRootLogin yes
+    * 允许密码登陆
+        * PasswordAuthentication yes
+    * 重启ssh
+        * sudo systemctl restart sshd
+
+## 中文输入法
+    * 安装输入法
+        sudo pacman -S fcitx5 fcitx5-chinese-addons fcitx5-configtool
+    * 配置输入法
+        fcitx5-configtool
+
+## hyperland配置
+* 配置显示器,我自己是两块4k显示器,一块1080显示器.
+    * hyprctl monitors all //查看显示器信息,然后根据显示器信息配置
+    * 似乎有一个bug,双4k显示器,都通过dp连接,总有一个无法正常工作,什么也不显示
+``` shell
+monitor=DP-3,1920x1080@60,-1920x0,1
+monitor=DP-1,3840x2160@60,0x0,2
+monitor=DP-2,3840x2160@60,1920x0,2
+```
