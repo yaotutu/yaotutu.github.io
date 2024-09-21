@@ -49,7 +49,7 @@ export const menuItems = [
       {
         id: "css",
         text: "CSS blogs",
-        href: "/blog/categories/css",
+        href: "/blog/categories/CSS",
         svg: "cube",
         target: "_self",
       }, // Technology category
