@@ -1,0 +1,78 @@
+---
+title: "设计模式"
+description: "设计模式"
+pubDate: "2024-10-13"
+image: /image/image4.jpg
+categories:
+  - 设计模式
+badge: "Pin"
+---
+
+
+## 单例模式
+
+- 单例模式是一种创建型设计模式， 让你能够保证一个类只有一个实例， 并提供一个访问该实例的全局节点。
+- 这种模式在许多场景中都非常有用，比如管理全局配置、数据库连接池、日志记录器等。
+
+- 单例模式的核心思想
+    - 唯一实例：确保类只有一个实例。
+    - 全局访问点：提供一个全局访问点来获取这个唯一的实例。
+- 与模块导出的关联
+    - 在 JavaScript 中，特别是使用 ES6 模块系统时，可以通过模块导出来实现单例模式。这种方式利用了模块系统的缓存机制，确保每次导入时都返回同一个实例。
+
+```javascript
+// 单例类
+class Singleton {
+  // 静态私有属性，用于存储唯一的Singleton实例
+  static #instance = null;
+
+  // 私有构造函数，防止外部通过new操作符创建多个实例
+  constructor() {
+    // 可以在这里初始化一些数据
+    if (Singleton.#instance) {
+      // 如果已经存在实例，则抛出错误，防止多次实例化
+      throw new Error(
+        "Error: Instantiation failed. Use Singleton.getInstance() instead of new.",
+      );
+    }
+  }
+
+  // 静态方法，用于获取Singleton的唯一实例
+  static getInstance() {
+    // 如果没有实例，则创建一个新的实例
+    if (!Singleton.#instance) {
+      // 使用new操作符创建Singleton的新实例
+      // 静态属性在类被定义时创建，并且只要类存在，静态属性就会一直存在。
+      Singleton.#instance = new Singleton();
+    }
+    // 返回Singleton的唯一实例
+    return Singleton.#instance;
+  }
+
+  // 业务逻辑方法
+  someBusinessLogic() {
+    // 这里可以定义具体的业务逻辑
+    console.log("执行了一些业务逻辑");
+  }
+}
+
+// 客户端代码
+function clientCode() {
+  // 通过Singleton.getInstance()获取Singleton的实例
+  const s1 = Singleton.getInstance();
+  const s2 = Singleton.getInstance();
+
+  // 检查两个变量是否指向同一个实例
+  if (s1 === s2) {
+    console.log("单例工作正常，两个变量包含相同的实例。");
+  } else {
+    console.log("单例失败，变量包含不同的实例。");
+  }
+
+  // 调用业务逻辑方法
+  s1.someBusinessLogic();
+}
+
+// 执行客户端代码
+clientCode();
+```
