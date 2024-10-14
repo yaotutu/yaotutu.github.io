@@ -1,0 +1,28 @@
+---
+title: "手写js工具函数"
+description: "手写js工具函数"
+pubDate: "2024-10-14"
+image: /image/image4.jpg
+categories:
+  - javascript
+badge: "Pin"
+---
+
+## 深拷贝
+```js
+
+function deepClone(obj) {
+  if (obj === null) return null;
+  if (typeof obj !== 'object') return obj;
+  if (obj instanceof Date) return new Date(obj);
+  if (obj instanceof RegExp) return new RegExp(obj);
+  let newObj = new obj.constructor;
+  for (let key in obj) {
+    if (obj.hasOwnProperty(key)) {
+      newObj[key] = deepClone(obj[key]);
+    }
+  }
+  return newObj;
+}
+
+```
