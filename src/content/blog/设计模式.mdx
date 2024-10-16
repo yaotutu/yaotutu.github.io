@@ -8,17 +8,16 @@ categories:
 badge: "Pin"
 ---
 
-
 ## 单例模式
 
 - 单例模式是一种创建型设计模式， 让你能够保证一个类只有一个实例， 并提供一个访问该实例的全局节点。
 - 这种模式在许多场景中都非常有用，比如管理全局配置、数据库连接池、日志记录器等。
 
 - 单例模式的核心思想
-    - 唯一实例：确保类只有一个实例。
-    - 全局访问点：提供一个全局访问点来获取这个唯一的实例。
+  - 唯一实例：确保类只有一个实例。
+  - 全局访问点：提供一个全局访问点来获取这个唯一的实例。
 - 与模块导出的关联
-    - 在 JavaScript 中，特别是使用 ES6 模块系统时，可以通过模块导出来实现单例模式。这种方式利用了模块系统的缓存机制，确保每次导入时都返回同一个实例。
+  - 在 JavaScript 中，特别是使用 ES6 模块系统时，可以通过模块导出来实现单例模式。这种方式利用了模块系统的缓存机制，确保每次导入时都返回同一个实例。
 
 ```javascript
 // 单例类
@@ -78,3 +77,50 @@ clientCode();
 ```
 
 ## 代理模式
+
+- 代理模式是一种结构型设计模式， 让你能提供对象的替代品或其占位符。 代理控制着对于原对象的访问， 并允许在将请求提交给对象前后进行一些处理。
+- 代理模式的核心思想
+  - 代理对象：代理对象包含一个指向真实对象的引用，从而可以在访问真实对象之前或之后执行一些额外的操作。
+  - 真实对象：真实对象是代理所代表的对象，最终执行真正的业务逻辑。
+- 与模块导出的关联
+  - 在 JavaScript 中，特别是使用 ES6 模块系统时，可以通过模块导出来实现代理模式。这种方式利用了模块系统的缓存机制，确保每次导入时都返回同一个实例。
+
+```javascript
+// 真实主题
+class RealSubject {
+  request() {
+    console.log("RealSubject: 处理请求。");
+  }
+}
+// 代理类
+class Proxy {
+  // 代理对象包含一个指向真实对象的引用
+  constructor(realSubject) {
+    this.realSubject = realSubject;
+  }
+  // 代理对象可以在访问真实对象之前或之后执行一些额外的操作
+  request() {
+    if (this.checkAccess()) {
+      this.realSubject.request();
+      this.logAccess();
+    }
+  }
+  checkAccess() {
+    console.log("Proxy: 检查访问权限。");
+    return true;
+  }
+  logAccess() {
+    console.log("Proxy: 记录请求日志。");
+  }
+}
+// 客户端代码
+function clientCode(subject) {
+  subject.request();
+}
+// 创建真实主题
+const realSubject = new RealSubject();
+// 创建代理对象
+const proxy = new Proxy(realSubject);
+// 执行客户端代码
+clientCode(proxy);
+```
