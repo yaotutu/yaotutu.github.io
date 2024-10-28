@@ -1,0 +1,28 @@
+---
+title: "PVE英特尔显卡虚拟化"
+description: "PVE英特尔显卡虚拟化"
+pubDate: "2024-10-28"
+image: /image/image4.jpg
+categories:
+  - LINUX
+badge: "Pin"
+---
+
+## 英特尔显卡虚拟化
+* 硬件要求
+    * intel gvt-g技术，只支持5代以上桌面CPU或者4代以上服务器CPU。不支持11代以上CPU。
+
+
+## 开启pve的显卡虚拟化支持
+
+```shell
+#开启iommu和gvt内核 
+#编辑grub
+vi /etc/default/grub
+#找到：GRUB_CMDLINE_LINUX_DEFAULT="quiet"
+#修改为：
+GRUB_CMDLINE_LINUX_DEFAULT="quiet intel_iommu=on i915.enable_gvt=1"
+#update grub
+update-grub
+
+```
