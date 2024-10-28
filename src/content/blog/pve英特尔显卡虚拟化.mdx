@@ -57,3 +57,18 @@ vfio_virqfd:
 kvmgt:
 - 作用：支持KVM（Kernel-based Virtual Machine）中的GPU虚拟化功能。
 - 场景：用于在虚拟机中实现GPU加速，支持图形密集型应用。
+
+## 验证是否成功开启GVT
+```shell
+# 查看所有pci设备，找到显卡对应的pci地址
+lspci -nn | grep VGA
+# 00:02.0 VGA compatible controller [0300]: Intel Corporation HD Graphics 530 [8086:1912] (rev 06)
+ls /sys/bus/pci/devices/0000:00:02.0/mdev_supported_types/   #注意替换成自己的pci地址
+# i915-GVTg_V5_4	i915-GVTg_V5_8
+```
+## 创建虚拟机，添加虚拟显卡
+创建虚拟机，添加虚拟显卡，选择i915-GVTg_V5_4或者i915-GVTg_V5_8
+
+
+## 参考文章
+* https://wiki.archlinuxcn.org/wiki/Intel_GVT-g
