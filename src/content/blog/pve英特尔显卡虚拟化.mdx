@@ -9,8 +9,8 @@ badge: "Pin"
 ---
 
 ## 英特尔显卡虚拟化
-* 硬件要求
-    * intel gvt-g技术，只支持5代以上桌面CPU或者4代以上服务器CPU。不支持11代以上CPU。
+硬件要求
+* intel gvt-g技术，只支持5代以上桌面CPU或者4代以上服务器CPU。不支持11代以上CPU。
 
 
 ## 开启pve的显卡虚拟化支持
@@ -25,4 +25,35 @@ GRUB_CMDLINE_LINUX_DEFAULT="quiet intel_iommu=on i915.enable_gvt=1"
 #update grub
 update-grub
 
+# intel_iommu 开启iommu
+# i915.enable_gvt=1 开启gvt-g技术
 ```
+加载直通内核模块
+```shell
+echo vfio >> /etc/modules
+echo vfio_iommu_type1 >> /etc/modules
+echo vfio_pci >> /etc/modules
+echo vfio_virqfd >> /etc/modules
+echo kvmgt >> /etc/modules
+update-initramfs -u 
+
+```
+vfio:
+- 作用：支持虚拟化I/O设备，允许直接访问物理设备而不经过虚拟化层。
+- 场景：用于实现高效的直通（Passthrough）功能。
+
+vfio_iommu_type1:
+- 作用：支持IOMMU（输入/输出内存管理单元）功能，配合vfio使用。
+- 场景：增强系统安全性，确保设备不会访问未经授权的内存区域。
+
+vfio_pci:
+- 作用：支持通过PCI接口直接访问物理设备。
+- 场景：用于实现对PCI设备的直接访问，提高性能。
+
+vfio_virqfd:
+- 作用：支持虚拟中断请求（Virtual IRQ Request），配合vfio使用。
+- 场景：用于管理虚拟化环境中的中断请求。
+
+kvmgt:
+- 作用：支持KVM（Kernel-based Virtual Machine）中的GPU虚拟化功能。
+- 场景：用于在虚拟机中实现GPU加速，支持图形密集型应用。
