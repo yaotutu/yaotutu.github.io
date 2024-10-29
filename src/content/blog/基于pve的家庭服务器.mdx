@@ -21,6 +21,34 @@ badge: "Pin"
 
 
 
+## QemuAgent
+ QemuAgent是用来实现虚拟机与宿主机之间的通信，主要是为了实现虚拟机的关机，重启等功能。
+ 给虚拟机安装QemuAgent，pve宿主机可以将关机，重启等信号发送给虚拟机，虚拟机的操作系统可以接收到这些信号，然后执行相应的操作。
+ 参考链接：https://pve.proxmox.com/wiki/Qemu-guest-agent
+ * OpenWRT
+    * 安装QemuAgent
+    
+        ```shell
+        opkg update
+        opkg install qemu-ga
+        # 可选
+        /etc/init.d/qemu-ga enable
+        /etc/init.d/qemu-ga start
+        ```
+* OpenMediaVault
+    * 安装QemuAgent
+        ```shell
+        apt-get install qemu-guest-agent
+        systemctl enable qemu-guest-agent
+        systemctl start qemu-guest-agent
+        ```
+* Windows
+    * 安装QemuAgent
+        * 下载QemuAgent
+            * https://fedorapeople.org/groups/virt/virtio-win/direct-downloads/stable-virtio/virtio-win.iso
+        * 安装QemuAgent
+            * 安装virtio-win-gt-x64.msi
+            * 安装完成后，重启虚拟机
 
 ## pve 参考页面
 * lxc应用
