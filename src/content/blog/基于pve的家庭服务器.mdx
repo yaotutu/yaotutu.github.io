@@ -10,14 +10,16 @@ badge: "Pin"
 
 ## 介绍
 基于PVE的打造家庭服务器，主要是为了实现家庭服务器的功能，如NAS、媒体服务器、下载服务器等。
-* OMV
-    * 担任Nas的功能，提供文件共享，照片备份，视频流媒体等功能。
+* TruenasScale
+    * 担任Nas的功能，提供文件共享，照片备份，视频流媒体等功能,提供Docker，K8S等功能。
 * OpenWRT
     * 担任路由器的功能，提供家庭网络的管理，防火墙，VPN等功能。
 * ubuntu server
     * 用于远程开发，编译，运行一些服务。
 * Windows
     * 用于一些特殊软件的运行，如游戏，办公软件等。
+* Linux+tun网卡代理服务
+    * 用于代理一些软件的流量，如游戏，下载等。
 
 
 
@@ -49,6 +51,13 @@ badge: "Pin"
         * 安装QemuAgent
             * 安装virtio-win-gt-x64.msi
             * 安装完成后，重启虚拟机
+
+
+## Linux+tun模式 旁路由
+* 新建一个lxc容器,安装一个标准linux系统
+* 直通tun网卡到linux容器
+    * /dev/net/tun 标准的linux tun网卡地址
+
 
 ## pve 参考页面
 * lxc应用
