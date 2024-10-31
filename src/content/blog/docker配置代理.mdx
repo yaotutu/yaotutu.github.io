@@ -1,0 +1,28 @@
+---
+title: "docker配置代理"
+description: "docker配置代理"
+pubDate: "2024-10-30"
+image: /image/image4.jpg
+categories:
+  - LINUX
+badge: "Pin"
+---
+
+## 介绍
+为什么需要代理呢? 心里没点数?
+
+## docker pull 拉取镜像时设置代理
+
+docker pull 的代理被 systemd 接管，所以需要设置 systemd 的代理
+
+sudo vim /etc/systemd/system/docker.service.d/http-proxy.conf
+
+```shell
+[Service]
+Environment="HTTP_PROXY=http://192.168.55.201:7890"
+Environment="HTTPS_PROXY=http://192.168.55.201:7890"
+# 重启docker
+sudo systemctl daemon-reload
+sudo systemctl restart docker
+```
+
