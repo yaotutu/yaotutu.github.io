@@ -10,8 +10,8 @@ badge: "Pin"
 
 ## 介绍
 基于PVE的打造家庭服务器，主要是为了实现家庭服务器的功能，如NAS、媒体服务器、下载服务器等。
-* TruenasScale
-    * 担任Nas的功能，提供文件共享，照片备份，视频流媒体等功能,提供Docker，K8S等功能。
+* OpenMediaVault
+    * 担任Nas的功能，提供文件共享，照片备份，视频流媒体等功能,提供Docker。
 * OpenWRT
     * 担任路由器的功能，提供家庭网络的管理，防火墙，VPN等功能。
 * ubuntu server
@@ -58,6 +58,10 @@ badge: "Pin"
 * 直通tun网卡到linux容器
     * /dev/net/tun 标准的linux tun网卡地址
 
+## OpenMediaVault
+### 权限配置
+* 增加一个apps用户,用于供docker容器使用
+* 通过acl的形式,给文件夹调整权限,增加apps用户的权限
 
 ## pve 参考页面
 * lxc应用
