@@ -59,6 +59,7 @@ badge: "Pin"
     * /dev/net/tun 标准的linux tun网卡地址
 
 ## OpenMediaVault
+
 ### 权限配置
 * 增加一个apps用户,用于供docker容器使用
 * 通过acl的形式,给文件夹调整权限,增加apps用户的权限
@@ -71,3 +72,11 @@ badge: "Pin"
 * pve工具脚本
     * 开启虚拟化，虚拟化嵌套 等等，。
     * https://github.com/ivanhao/pvetools
+
+## 常用工具
+
+``` shell
+# 一键更换镜像源
+# 一键脚本存在安全风险,使用时请注意
+bash <(curl -sSL https://linuxmirrors.cn/main.sh)
+```
