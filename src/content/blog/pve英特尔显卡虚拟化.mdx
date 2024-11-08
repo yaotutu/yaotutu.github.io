@@ -65,10 +65,13 @@ lspci -nn | grep VGA
 # 00:02.0 VGA compatible controller [0300]: Intel Corporation HD Graphics 530 [8086:1912] (rev 06)
 ls /sys/bus/pci/devices/0000:00:02.0/mdev_supported_types/   #注意替换成自己的pci地址
 # i915-GVTg_V5_4	i915-GVTg_V5_8
+
 ```
 ## 创建虚拟机，添加虚拟显卡
 创建虚拟机，添加虚拟显卡，选择i915-GVTg_V5_4或者i915-GVTg_V5_8
 
+!!! 注意
+当我们查看显卡信息的时候,可能会输出`i915-GVTg_V5_4	i915-GVTg_V5_8`,这仅仅表示可以分配这种类型的gpu,并不是说可以分配两个gpu,具体可以同时分配几个还要具体分析.
 
 ## 参考文章
 * https://wiki.archlinuxcn.org/wiki/Intel_GVT-g
