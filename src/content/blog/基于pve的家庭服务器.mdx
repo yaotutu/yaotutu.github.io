@@ -11,7 +11,9 @@ badge: "Pin"
 ## 介绍
 基于PVE的打造家庭服务器，主要是为了实现家庭服务器的功能，如NAS、媒体服务器、下载服务器等。
 * OpenMediaVault
-    * 担任Nas的功能，提供文件共享，照片备份，视频流媒体等功能,提供Docker。
+    * 担任Nas的功能，提供文件共享，照片备份。
+* Cassos
+    * 主要提供docker服务.
 * OpenWRT
     * 担任路由器的功能，提供家庭网络的管理，防火墙，VPN等功能。
 * ubuntu server
@@ -51,6 +53,31 @@ badge: "Pin"
         * 安装QemuAgent
             * 安装virtio-win-gt-x64.msi
             * 安装完成后，重启虚拟机
+
+## Cassos
+所有的数据都是存储在OpenMediaVault上，Cassos只是一个docker服务，用于运行一些服务。实现存算分离.
+### nfs挂载OMV的存储.
+``` shell
+# 安装nfs
+apt-get install nfs-common
+# 在本地创建一个挂载点
+mkdir /mnt/omv
+# 挂载nfs
+mount -t nfs 192.168.55.222:/export/mtphotos /mnt/omv/mtphotos/
+# 卸载
+#umount /mnt/omv/mtphotos
+# 配置开机自动挂载
+vim /etc/fstab
+# 添加
+192.168.55.222:/export/mtphotos /mnt/omv/mtphotos nfs defaults 0 0
+```
+注意!!!
+nfs本身不具备权限控制，所以挂载的文件夹权限是由nfs服务器控制的，所以需要在nfs服务器上设置权限。
+客户端访问nfs服务时,会将本地的用户和组映射到nfs服务器上，所以需要保证nfs服务器和客户端的用户和组一致.
+假设,当前是root用户,那就回将当前root用户的用户id和用户组id映射到服务端,所以需要在服务端给root用户的文件夹权限.
+但是,root作为高权限用户,默认是会被禁止的,所以需要在nfs服务器上设置no_root_squash参数,允许root用户访问.这会带来风险,所以需要谨慎使用.
+或者,nfs服务中配置一个用户名和组名,nfs服务会用该用户来访问文件夹,你只需要给该用户对应的权限即可.
+在nfs配置中添加参数 anongid=100, anonuid=1001 ,这样不管你用什么用户访问nfs服务,最后都会被映射到1001用户和100组上.
 
 
 ## Linux+tun模式 旁路由
