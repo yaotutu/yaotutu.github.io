@@ -1,0 +1,48 @@
+---
+title: "mysql学习笔记"
+description: "mysql学习笔记"
+pubDate: "2024-11-12"
+image: /image/image4.jpg
+categories:
+  - 后端
+badge: "Pin"
+---
+
+
+## 安装
+
+## 配置远程登录
+修改配置文件,允许远程登录
+```shell
+# 修改配置文件
+sudo vim /etc/mysql/mysql.conf.d/mysqld.cnf
+# 添加或修改bind-address
+bind-address = 0.0.0.0
+# 重启mysql
+sudo systemctl restart mysql
+```
+修改用户权限,允许远程登录
+mysql8.0之前可以用以下方法
+```shell
+# 登录mysql
+mysql -u root -p
+# 修改用户权限
+GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' WITH GRANT OPTION;
+# 刷新权限
+FLUSH PRIVILEGES;
+```
+
+mysql8.0之后可以用以下方法
+
+```shell
+# 登录mysql
+mysql -u root -p
+# 查看root用户的权限
+SELECT user,host FROM mysql.user;
+# 修改用户权限
+update user set host='%' where user='root';
+# 再次查看用户权限
+SELECT user,host FROM mysql.user;
+# 刷新权限
+FLUSH PRIVILEGES;
+```
