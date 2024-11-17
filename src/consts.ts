@@ -4,8 +4,7 @@
 // Site title and description
 export const SITE_TAB = "Yaotutu";
 export const SITE_TITLE = "Yaotutu 🧊";
-export const SITE_DESCRIPTION =
-  "feedId:80985461136218112+userId:42801265339937792";
+export const SITE_DESCRIPTION = "Yaotutu blog";
 export const DATE_FORMAT = "YYYY-MM-DD";
 
 // User profile information
