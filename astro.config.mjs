@@ -31,9 +31,11 @@ export default defineConfig({
     mdx(),
     icon(),
     swup({
+      // @ts-ignore
       plugins: [new SwupScrollPlugin(), new SwupParallelPlugin()],
       containers: ["#swup"],
     }),
+    // @ts-ignore
     terser({
       compress: true,
       mangle: true,
@@ -52,15 +54,20 @@ export default defineConfig({
       transformers: [
         {
           preprocess(code, { lang }) {
+            // @ts-ignore
             this.lang = lang;
             return code;
           },
           root(node) {
+            // @ts-ignore
             if (node.tagName === "pre") {
+              // @ts-ignore
               node.tagName = "figure";
+              // @ts-ignore
               node.properties.className = ["highlight", this.lang];
             }
           },
+          // @ts-ignore
           pre(node) {
             const toolsDiv = {
               type: "element",
@@ -71,6 +78,7 @@ export default defineConfig({
                   type: "element",
                   tagName: "div",
                   properties: { className: ["code-lang"] },
+                  // @ts-ignore
                   children: [{ type: "text", value: this.lang.toUpperCase() }],
                 },
               ],
@@ -93,9 +101,13 @@ export default defineConfig({
               children: [],
             };
             node.children.forEach((lineNode, index, count) => {
+              // @ts-ignore
               count = 0;
+              // @ts-ignore
               lineNode.children.forEach(() => {
+                // @ts-ignore
                 if (count & (1 === 1)) {
+                  // @ts-ignore
                   lineNumberCode.children.push({
                     type: "element",
                     tagName: "div",
@@ -104,9 +116,11 @@ export default defineConfig({
                   });
                   index++;
                 }
+                // @ts-ignore
                 count++;
               });
 
+              // @ts-ignore
               codeContentPre.children.push(lineNode);
             });
             const table = {
@@ -118,6 +132,7 @@ export default defineConfig({
             return {
               type: "element",
               tagName: "figure",
+              // @ts-ignore
               properties: { className: ["highlight", this.lang] },
               children: [toolsDiv, table],
             };
@@ -196,5 +211,14 @@ export default defineConfig({
         },
       ],
     ],
+  },
+  vite: {
+    css: {
+      preprocessorOptions: {
+        scss: {
+          api: "modern-compiler", // 或者 'modern'
+        },
+      },
+    },
   },
 });
