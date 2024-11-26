@@ -1,0 +1,89 @@
+---
+title: "RSS使用指南"
+description: "RSS使用指南"
+pubDate: "2024-11-26"
+image: /image/image4.jpg
+categories:
+  - RSS
+badge: "Pin"
+---
+
+## 简介
+所有关于RSS的都在这里了.
+* RSSHUB
+    * 配置代理
+    * 配置推特
+    * 解决微博图片无法查看
+
+* miniflux
+    * 安装
+    * 全文抓取
+    * 文章过滤
+
+* 微信公众号转RSS
+
+* RSS客户端
+
+
+
+## miniflux安装
+本次安装的miniflux是非docker容器的,是跑在linux服务器上的需要提前配置好postgresql数据库
+根据miniflux官方文档,miniful会去读数据库的变量为 DATABASE_URL,详细的更多变量可以参考官方文档
+https://miniflux.app/docs/configuration.html
+
+```shell
+export DATABASE_URL="postgres://miniflux:password@localhost/miniflux?sslmode=disable"
+export LISTEN_ADDR=":8080"
+```
+### 三种安装方式
+#### 二进制包
+* 从github下载编译好的二进制文件直接执行
+    * 配置环境变量,写在bashrc或者zshrc里面
+    * 下载二进制文件,给执行权限直接执行就好了
+
+#### deb包
+* 从github下载deb包
+    * 优点是可以直接注册系统的systemd来接管服务,无需自己写systemd文件
+    * 可以查看 /lib/systemd/system/miniflux.service,可以看到miniflux的systemd文件,文件中提到,环境变量是读取/etc/miniflux.conf.所以我们可以在/etc/miniflux.conf中配置环境变量
+    ```shell
+        [Unit]
+        Description=Miniflux
+        Documentation=man:miniflux(1) https://miniflux.app/docs/index.html
+        After=network.target postgresql.service
+
+        [Service]
+        ExecStart=/usr/bin/miniflux
+        User=miniflux
+
+        # Load environment variables from /etc/miniflux.conf.
+        EnvironmentFile=/etc/miniflux.conf
+    ```
+    * 编辑/etc/miniflux.conf,添加环境变量.然后重启服务,以下配置供参考
+    ```shell
+        # See https://miniflux.app/docs/configuration.html
+
+        #RUN_MIGRATIONS=1
+        # 数据库地址
+        DATABASE_URL=postgres://postgres:redhat@192.168.55.214:5432/miniflux?sslmode=disable
+        # 监听地址,默认只监听本机的
+        LISTEN_ADDR=0.0.0.0:8080
+        # 客户端超时配置
+        HTTP_CLIENT_TIMEOUT=300
+    ```
+#### apt安装
+* 配置仓库,通过apt安装(不推荐,这种版本一般都特别老)
+    * 添加仓库
+    ```shell 
+    # 添加仓库
+    echo "deb [trusted=yes] https://deb.github.io/miniflux stable main" | sudo tee /etc/apt/sources.list.d/miniflux.list
+
+    # 安装
+    sudo apt update
+    sudo apt install miniflux
+    ```
+
+
+持续更新...
+
+
+
